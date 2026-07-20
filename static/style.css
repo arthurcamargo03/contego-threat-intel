@@ -1,0 +1,167 @@
+/* Contego Threat Intel — estilos.
+   Paleta escura sóbria (tom de ferramenta de segurança). As cores do veredito
+   seguem o semáforo: verde=limpo, âmbar=suspeito, vermelho=malicioso. */
+
+:root {
+  --bg: #0f1420;
+  --surface: #1a2130;
+  --surface-2: #232c3d;
+  --text: #e6e9ef;
+  --dim: #8b95a7;
+  --accent: #4f8cff;
+  --clean: #2ecc71;
+  --suspect: #f1c40f;
+  --malicious: #e74c3c;
+  --border: #2c3548;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* --- Barra superior --- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.topbar h1 { font-size: 1.15rem; margin: 0; }
+.topbar h1 a { color: var(--text); }
+.topbar nav a { color: var(--dim); }
+
+.container { max-width: 860px; margin: 0 auto; padding: 1.5rem; }
+
+/* --- Formulário de busca --- */
+.search { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+.search input {
+  flex: 1;
+  padding: 0.7rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+}
+.search input:focus { outline: none; border-color: var(--accent); }
+.search button {
+  padding: 0.7rem 1.4rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.search button:hover { filter: brightness(1.1); }
+
+/* --- Alertas de erro --- */
+.alert.error {
+  background: rgba(231, 76, 60, 0.12);
+  border: 1px solid var(--malicious);
+  color: #ffb4ab;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* --- Cabeçalho do resultado --- */
+.result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.ind-type {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dim);
+}
+.indicator { margin: 0.15rem 0 0; font-size: 1.5rem; word-break: break-all; }
+.meta { color: var(--dim); font-size: 0.85rem; margin: 0.3rem 0 1.2rem; }
+
+/* --- Selo de veredito (cor por nível) --- */
+.verdict {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+.verdict.small { padding: 0.15rem 0.55rem; font-size: 0.72rem; }
+.threat-limpo { background: rgba(46, 204, 113, 0.15); color: var(--clean); border: 1px solid var(--clean); }
+.threat-suspeito { background: rgba(241, 196, 15, 0.15); color: var(--suspect); border: 1px solid var(--suspect); }
+.threat-malicioso { background: rgba(231, 76, 60, 0.15); color: var(--malicious); border: 1px solid var(--malicious); }
+
+/* --- Cards de seção --- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+.card h3 { margin: 0 0 0.6rem; font-size: 1rem; }
+.card.ai { border-color: var(--accent); }
+.ai-text { white-space: pre-line; }
+
+/* --- Listas --- */
+.pulse-list { margin: 0; padding-left: 1.2rem; }
+.pulse-list li { margin-bottom: 0.25rem; }
+.mono-list { list-style: none; margin: 0; padding: 0; }
+.mono-list li {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 0.82rem;
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--border);
+  word-break: break-all;
+}
+.empty { color: var(--dim); font-style: italic; }
+
+/* --- Pares chave/valor (geo, análise de arquivo) --- */
+.kv { display: grid; grid-template-columns: 130px 1fr; gap: 0.35rem 1rem; margin: 0; }
+.kv dt { color: var(--dim); }
+.kv dd { margin: 0; word-break: break-all; }
+
+/* --- Tags e chips --- */
+.tag {
+  display: inline-block;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.1rem 0.5rem;
+  margin: 0.15rem 0.15rem 0 0;
+  font-size: 0.78rem;
+}
+.tag.danger { border-color: var(--malicious); color: #ffb4ab; }
+
+.mono { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.dim { color: var(--dim); font-size: 0.85rem; }
+
+/* --- Tabela de histórico --- */
+.history { width: 100%; border-collapse: collapse; }
+.history th, .history td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+.history th { color: var(--dim); font-weight: 600; }
+.btn-link {
+  background: var(--surface-2);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
