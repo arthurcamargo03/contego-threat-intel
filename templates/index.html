@@ -119,9 +119,9 @@
       {% if result.urls %}
       <div class="card">
         <h3>URLs associadas ({{ result.urls.count }})</h3>
-        {% if result.urls.items %}
+        {% if result.urls.entries %}
         <ul class="mono-list">
-          {% for u in result.urls.items %}
+          {% for u in result.urls.entries %}
           <li>{{ u.url }} <span class="dim">{{ u.date }}</span></li>
           {% endfor %}
         </ul>

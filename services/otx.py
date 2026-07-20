@@ -255,8 +255,10 @@ def _extract_urls(payload: dict[str, Any]) -> dict[str, Any]:
     actual_size é o total real de URLs; mostramos só as 10 primeiras no dashboard.
     """
     url_list = payload.get("url_list") or []
-    items = [{"url": u.get("url"), "date": u.get("date")} for u in url_list[:10]]
-    return {"count": payload.get("actual_size", 0) or 0, "items": items}
+    # Chave "entries" (não "items"): no Jinja2, result.urls.items resolveria para o
+    # MÉTODO .items() do dict, não para a chave — um bug clássico de colisão de nome.
+    entries = [{"url": u.get("url"), "date": u.get("date")} for u in url_list[:10]]
+    return {"count": payload.get("actual_size", 0) or 0, "entries": entries}
 
 
 def _extract_file_analysis(payload: dict[str, Any]) -> dict[str, Any]:
