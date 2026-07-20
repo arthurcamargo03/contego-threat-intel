@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contego Threat Intel</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1><a href="/">🛡️ Contego Threat Intel</a></h1>
+    <nav><a href="/history">Histórico</a></nav>
+  </header>
+
+  <main class="container">
+    <!-- Formulário de consulta: input único; o tipo é detectado no backend. -->
+    <form class="search" method="post" action="/">
+      <input
+        type="text"
+        name="indicator"
+        placeholder="Digite um IP, domínio ou hash (MD5/SHA1/SHA256)"
+        value="{{ last_input or '' }}"
+        autofocus
+        required
+      >
+      <button type="submit">Consultar</button>
+    </form>
+
+    <!-- Mensagem de erro amigável (indicador inválido, 404, API fora, etc.). -->
+    {% if error %}
+    <div class="alert error">⚠️ {{ error }}</div>
+    {% endif %}
+
+    <!-- Dashboard do resultado. Só aparece quando há uma consulta feita. -->
+    {% if result %}
+    {% set labels = {'ipv4': 'IPv4', 'domain': 'Domínio', 'hash': 'Hash de arquivo'} %}
+    <section class="dashboard">
+
+      <!-- Cabeçalho: indicador + tipo + veredito colorido -->
+      <div class="result-head">
+        <div>
+          <span class="ind-type">{{ labels[result.indicator_type] }}</span>
+          <h2 class="indicator">{{ result.indicator }}</h2>
+        </div>
+        <!-- A classe threat-{nivel} controla a cor no CSS (verde/amarelo/vermelho). -->
+        <span class="verdict threat-{{ result.threat_level }}">
+          {{ result.threat_level | upper }}
+        </span>
+      </div>
+
+      <p class="meta">
+        {{ result.pulse_count }} pulse(s) relacionado(s)
+        · consultado em {{ result.queried_at }}
+      </p>
+
+      <!-- Resumo IA (preenchido na Etapa 4; some se não houver). -->
+      {% if ai_summary %}
+      <div class="card ai">
+        <h3>Resumo IA</h3>
+        <p class="ai-text">{{ ai_summary }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Pulses: nomes dos relatórios que citam o indicador. -->
+      <div class="card">
+        <h3>Pulses / Relatórios</h3>
+        {% if result.pulses.names %}
+        <ul class="pulse-list">
+          {% for name in result.pulses.names %}<li>{{ name }}</li>{% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty">Nenhum pulse relacionado.</p>
+        {% endif %}
+
+        {% if result.pulses.malware_families %}
+        <p><strong>Famílias de malware:</strong>
+          {% for f in result.pulses.malware_families %}
+          <span class="tag danger">{{ f }}</span>
+          {% endfor %}
+        </p>
+        {% endif %}
+
+        {% if result.pulses.tags %}
+        <p><strong>Tags:</strong>
+          {% for t in result.pulses.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+        </p>
+        {% endif %}
+      </div>
+
+      <!-- Geolocalização: para IP e domínio. -->
+      {% if result.geo %}
+      <div class="card">
+        <h3>Geolocalização</h3>
+        <dl class="kv">
+          <dt>País</dt><dd>{{ result.geo.country or '—' }}</dd>
+          <dt>Cidade</dt><dd>{{ result.geo.city or '—' }}</dd>
+          <dt>ASN</dt><dd>{{ result.geo.asn or '—' }}</dd>
+        </dl>
+      </div>
+      {% endif %}
+
+      <!-- Malware associado: para IP e domínio. -->
+      {% if result.malware %}
+      <div class="card">
+        <h3>Malware associado ({{ result.malware.count }})</h3>
+        {% if result.malware.samples %}
+        <ul class="mono-list">
+          {% for s in result.malware.samples %}
+          <li>{{ s.hash }}{% if s.detections %} — {{ s.detections }}{% endif %}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty">Nenhuma amostra de malware.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- URLs associadas: para domínio. -->
+      {% if result.urls %}
+      <div class="card">
+        <h3>URLs associadas ({{ result.urls.count }})</h3>
+        {% if result.urls.items %}
+        <ul class="mono-list">
+          {% for u in result.urls.items %}
+          <li>{{ u.url }} <span class="dim">{{ u.date }}</span></li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty">Nenhuma URL associada.</p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- Análise do arquivo: para hash. -->
+      {% if result.file_analysis %}
+      <div class="card">
+        <h3>Análise do arquivo</h3>
+        <dl class="kv">
+          <dt>Tipo</dt><dd>{{ result.file_analysis.file_type or '—' }}</dd>
+          <dt>Tamanho</dt><dd>{{ result.file_analysis.filesize or '—' }} bytes</dd>
+          <dt>MD5</dt><dd class="mono">{{ result.file_analysis.md5 or '—' }}</dd>
+          <dt>SHA1</dt><dd class="mono">{{ result.file_analysis.sha1 or '—' }}</dd>
+          <dt>SHA256</dt><dd class="mono">{{ result.file_analysis.sha256 or '—' }}</dd>
+        </dl>
+        {% if result.file_analysis.tags %}
+        <p><strong>Tags:</strong>
+          {% for t in result.file_analysis.tags %}<span class="tag">{{ t }}</span>{% endfor %}
+        </p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>

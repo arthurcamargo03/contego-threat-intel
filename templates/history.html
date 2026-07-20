@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico · Contego Threat Intel</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1><a href="/">🛡️ Contego Threat Intel</a></h1>
+    <nav><a href="/">Nova consulta</a></nav>
+  </header>
+
+  <main class="container">
+    <h2>Histórico de consultas</h2>
+
+    {% if queries %}
+    <table class="history">
+      <thead>
+        <tr>
+          <th>Indicador</th>
+          <th>Tipo</th>
+          <th>Veredito</th>
+          <th>Pulses</th>
+          <th>Data</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set labels = {'ipv4': 'IPv4', 'domain': 'Domínio', 'hash': 'Hash'} %}
+        {% for q in queries %}
+        <tr>
+          <td class="mono">{{ q.indicator }}</td>
+          <td>{{ labels[q.indicator_type] }}</td>
+          <td><span class="verdict small threat-{{ q.threat_level }}">{{ q.threat_level | upper }}</span></td>
+          <td>{{ q.pulse_count }}</td>
+          <td class="dim">{{ q.created_at }}</td>
+          <!-- Link para reabrir o resultado detalhado direto do banco. -->
+          <td><a class="btn-link" href="/query/{{ q.id }}">Reabrir</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="empty">Nenhuma consulta ainda. <a href="/">Faça a primeira</a>.</p>
+    {% endif %}
+  </main>
+</body>
+</html>
