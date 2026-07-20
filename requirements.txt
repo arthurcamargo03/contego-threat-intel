@@ -1,0 +1,9 @@
+# Versões fixadas (pinned) para builds reproduzíveis: garante que a app rode
+# igual na minha máquina e na do avaliador, sem surpresa de breaking change.
+
+fastapi==0.115.6          # framework web (rotas, injeção de dependência)
+uvicorn[standard]==0.34.0 # servidor ASGI que roda a app FastAPI
+jinja2==3.1.5             # renderização dos templates HTML
+httpx==0.28.1            # cliente HTTP (chamadas ao OTX e à Claude API); suporta timeout nativo
+python-dotenv==1.0.1     # carrega as variáveis do .env em os.environ
+python-multipart==0.0.20 # necessário p/ o FastAPI ler dados de formulário (o input do IOC)
