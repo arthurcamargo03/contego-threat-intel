@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles  # noqa: E402
 from fastapi.templating import Jinja2Templates  # noqa: E402
 
 from database import db  # noqa: E402
-from services import otx  # noqa: E402
+from services import ai, otx  # noqa: E402
 
 # Caminhos absolutos (baseados neste arquivo) pra app rodar de qualquer diretório.
 BASE_DIR = Path(__file__).resolve().parent
@@ -70,19 +70,23 @@ def consultar(request: Request, indicator: str = Form(...)):
             {"error": str(e), "last_input": indicator},
         )
 
-    # Consulta OK: persiste no histórico. (O resumo de IA entra na Etapa 4.)
+    # Consulta OK. Gera o resumo de IA (opcional): se a chave não estiver
+    # configurada ou a API falhar, ai_summary volta None e seguimos normalmente.
+    ai_summary = ai.generate_summary(result)
+
+    # Persiste no histórico já com o resumo (ou None).
     query_id = db.save_query(
         indicator=result["indicator"],
         indicator_type=result["indicator_type"],
         threat_level=result["threat_level"],
         pulse_count=result["pulse_count"],
         raw_response=result,
-        ai_summary=None,
+        ai_summary=ai_summary,
     )
 
     return templates.TemplateResponse(
         request, "index.html",
-        {"result": result, "query_id": query_id},
+        {"result": result, "query_id": query_id, "ai_summary": ai_summary},
     )
 
 
