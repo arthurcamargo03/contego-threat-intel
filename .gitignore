@@ -1,0 +1,27 @@
+# --- Segredos e configuração local ---
+# NUNCA versionar o .env: ele guarda as chaves reais (OTX e Anthropic).
+# O .env.example (com os NOMES das variáveis, sem valores) é versionado no lugar.
+.env
+
+# --- Banco de dados local ---
+# O histórico de consultas é gerado em runtime; não deve ir pro repositório.
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Ambiente virtual Python ---
+venv/
+.venv/
+env/
+
+# --- Caches e artefatos do Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+
+# --- Sistema operacional / editor ---
+.DS_Store
+.idea/
+.vscode/
