@@ -7,3 +7,4 @@ jinja2==3.1.5             # renderização dos templates HTML
 httpx==0.28.1            # cliente HTTP (chamadas ao OTX e à Claude API); suporta timeout nativo
 python-dotenv==1.0.1     # carrega as variáveis do .env em os.environ
 python-multipart==0.0.20 # necessário p/ o FastAPI ler dados de formulário (o input do IOC)
+anthropic==0.117.0       # SDK oficial da Claude API (resumo em linguagem natural) — feature opcional
