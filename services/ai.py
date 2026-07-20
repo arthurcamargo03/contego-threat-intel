@@ -32,7 +32,12 @@ _SYSTEM_PROMPT = (
     "para um cliente NÃO técnico. Escreva em português do Brasil, em 2 a 3 parágrafos, "
     "tom profissional e direto. Explique o que o indicador representa, o nível de risco "
     "e uma recomendação prática. Não use jargão sem explicar e não invente dados além "
-    "dos fornecidos."
+    "dos fornecidos. "
+    # Instrução de formatação: o resumo é exibido como texto simples no HTML, então
+    # pedimos parágrafos corridos, sem markdown (títulos, listas, * ou #), pra não
+    # aparecer sintaxe crua na tela.
+    "Responda em texto corrido, apenas parágrafos separados por uma linha em branco. "
+    "NÃO use markdown: nada de títulos com #, negrito com **, marcadores ou listas."
 )
 
 
