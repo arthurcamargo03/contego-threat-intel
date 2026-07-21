@@ -28,6 +28,25 @@ de um briefing para o cliente.
 - **Histórico** persistido em SQLite, com link para reabrir cada consulta.
 - **Resumo IA** (diferencial, opcional): briefing de 2-3 parágrafos em PT-BR via Claude.
 
+## Demonstração
+
+Consulta de um **hash malicioso** (WannaCry) — veredito, pulses relacionados e o
+**Resumo IA** gerado em linguagem natural para um cliente não técnico:
+
+![Consulta de hash malicioso com Resumo IA](docs/03-hash-resumo-ia.png)
+
+Consulta de um **IP limpo** (8.8.8.8) — veredito verde, resumo e geolocalização:
+
+![Consulta de IP limpo](docs/02-ip-limpo.png)
+
+**Histórico** das consultas anteriores, com link para reabrir cada resultado:
+
+![Histórico de consultas](docs/04-historico.png)
+
+Tela inicial:
+
+![Tela inicial](docs/01-home.png)
+
 ## Como obter as chaves de API
 
 ### AlienVault OTX (obrigatória)
