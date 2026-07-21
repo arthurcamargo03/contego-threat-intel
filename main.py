@@ -134,6 +134,6 @@ def reopen_query(request: Request, query_id: int):
         {
             "result": record["raw_response"],
             "query_id": record["id"],
-            "ai_summary": record["ai_summary"],  # já pensando na Etapa 4
+            "ai_summary": record["ai_summary"],
         },
     )
