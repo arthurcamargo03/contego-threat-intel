@@ -35,7 +35,7 @@
           <td>{{ labels[q.indicator_type] }}</td>
           <td><span class="verdict small threat-{{ q.threat_level }}">{{ q.threat_level | upper }}</span></td>
           <td>{{ q.pulse_count }}</td>
-          <td class="dim">{{ q.created_at }}</td>
+          <td class="dim">{{ q.created_at | data_br }}</td>
           <!-- Link para reabrir o resultado detalhado direto do banco. -->
           <td><a class="btn-link" href="/query/{{ q.id }}">Reabrir</a></td>
         </tr>

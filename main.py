@@ -6,6 +6,7 @@ de verdade mora nos services — aqui só coordenamos e traduzimos erros em mens
 amigáveis pro usuário (nunca deixando stack trace vazar pra tela).
 """
 
+from datetime import datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -28,6 +29,21 @@ BASE_DIR = Path(__file__).resolve().parent
 app = FastAPI(title="Contego Threat Intel")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
+
+
+def _formata_data(iso: str) -> str:
+    """Filtro Jinja: converte um timestamp ISO 8601 (guardado em UTC) num formato
+    legível pro usuário final (dd/mm/aaaa hh:mm). Guardamos ISO no banco por ser um
+    padrão não ambíguo; a formatização amigável fica só na exibição.
+    """
+    try:
+        return datetime.fromisoformat(iso).strftime("%d/%m/%Y %H:%M")
+    except (ValueError, TypeError):
+        return iso or "—"
+
+
+# Registra o filtro para uso nos templates: {{ data | data_br }}
+templates.env.filters["data_br"] = _formata_data
 
 
 @app.on_event("startup")
