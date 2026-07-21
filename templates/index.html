@@ -48,10 +48,32 @@
         </span>
       </div>
 
-      <p class="meta">
-        {{ result.pulse_count }} pulse(s) relacionado(s)
-        · consultado em {{ result.queried_at | data_br }}
-      </p>
+      <!-- Faixa de indicadores (KPIs): resumo dos números-chave num relance, antes
+           do detalhe. É o que dá a "cara de dashboard" — o estado (veredito) é
+           codificado também na cor, não só no texto. -->
+      {% set tipos = {'ipv4': 'IPv4', 'domain': 'Domínio', 'hash': 'Hash'} %}
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-label">Tipo</span>
+          <span class="stat-value">{{ tipos[result.indicator_type] }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Veredito</span>
+          <span class="stat-value stat-verdict-{{ result.threat_level }}">{{ result.threat_level | upper }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Pulses relacionados</span>
+          <span class="stat-value">{{ result.pulse_count }}</span>
+        </div>
+        {% if result.geo and result.geo.country %}
+        <div class="stat">
+          <span class="stat-label">País</span>
+          <span class="stat-value stat-value-sm">{{ result.geo.country }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <p class="meta">Consultado em {{ result.queried_at | data_br }}</p>
 
       <!-- Resumo IA (preenchido na Etapa 4; some se não houver). -->
       {% if ai_summary %}

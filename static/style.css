@@ -105,6 +105,38 @@ a:hover { text-decoration: underline; }
 .threat-suspeito { background: rgba(241, 196, 15, 0.15); color: var(--suspect); border: 1px solid var(--suspect); }
 .threat-malicioso { background: rgba(231, 76, 60, 0.15); color: var(--malicious); border: 1px solid var(--malicious); }
 
+/* --- Faixa de indicadores (KPIs) --- */
+/* Grid que se auto-ajusta: mostra os números-chave em blocos, dando a leitura
+   "num relance" típica de um dashboard. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.7rem;
+  margin: 0.4rem 0 0.9rem;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dim);
+  font-weight: 600;
+}
+.stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1.15; }
+.stat-value-sm { font-size: 1rem; font-weight: 600; }  /* p/ textos longos, ex: país */
+/* Veredito colorido (semáforo) — estado codificado na cor, não só no texto. */
+.stat-verdict-limpo { color: var(--clean); }
+.stat-verdict-suspeito { color: var(--suspect); }
+.stat-verdict-malicioso { color: var(--malicious); }
+
 /* --- Cards de seção --- */
 .card {
   background: var(--surface);
